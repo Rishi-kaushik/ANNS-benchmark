@@ -1,6 +1,8 @@
 
 import h5py
 import numpy as np
+import os
+import subprocess
 from ann_benchmarks.datasets.base import BaseDataset
 
 class SIFT(BaseDataset):
@@ -34,6 +36,13 @@ class SIFT(BaseDataset):
 
     def get_distance_metric(self):
         return self.distance_metric
+
+    def download(self):
+        if not os.path.exists('sift-128-euclidean.hdf5'):
+            print("Downloading sift-128-euclidean.hdf5...")
+            subprocess.run(["wget", "http://ann-benchmarks.com/sift-128-euclidean.hdf5"])
+        else:
+            print("sift-128-euclidean.hdf5 already exists.")
 
 def instantiate_dataset():
     return SIFT()

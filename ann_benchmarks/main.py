@@ -12,5 +12,9 @@ if __name__ == "__main__":
         '--dataset',
         help='The dataset to run on',
         required=True)
+    parser.add_argument(
+        '--rebuild',
+        help='Rebuild the index even if a cache exists',
+        action='store_true')
     args = parser.parse_args()
-    run_benchmark(args.dataset, args.algorithm)
+    run_benchmark(args.dataset, args.algorithm, args.rebuild)

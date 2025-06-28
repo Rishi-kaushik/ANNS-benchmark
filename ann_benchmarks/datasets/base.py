@@ -21,3 +21,7 @@ class BaseDataset(ABC):
     @abstractmethod
     def get_distance_metric(self):
         pass
+
+    @abstractmethod
+    def download(self):
+        pass

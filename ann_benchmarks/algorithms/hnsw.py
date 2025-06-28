@@ -15,5 +15,11 @@ class HNSW(BaseAlgorithm):
         # The first dimension corresponds to the query, so we return labels[0].
         return labels[0]
 
+    def save(self, filename):
+        faiss.write_index(self.index, filename)
+
+    def load(self, filename):
+        self.index = faiss.read_index(filename)
+
 def instantiate_algorithm(metric, dimensions):
     return HNSW(metric, dimensions)

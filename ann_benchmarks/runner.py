@@ -20,6 +20,7 @@ def run_benchmark(dataset_name, algorithm_name):
 
     start_time = time.time()
     recalls = {1: [], 3: [], 5: []}
+    precisions = {1: [], 3: [], 5: []}
     
     for query, ground_truth in tqdm(zip(dataset.get_test_data(), dataset.get_ground_truth()), total=len(dataset.get_test_data())):
         results = algorithm.query(query, 10)
@@ -28,11 +29,16 @@ def run_benchmark(dataset_name, algorithm_name):
             recall_k = len(set(results[:k]) & set(ground_truth[:k])) / k
             recalls[k].append(recall_k)
             
+            precision_k = len(set(results[:k]) & set(ground_truth[:k])) / len(results[:k])
+            precisions[k].append(precision_k)
+            
     query_time = time.time() - start_time
     
     for k in sorted(recalls.keys()):
         avg_recall_k = np.mean(recalls[k])
+        avg_precision_k = np.mean(precisions[k])
         print(f"Average recall@{k}: {avg_recall_k:.4f}")
+        print(f"Average precision@{k}: {avg_precision_k:.4f}")
         
     qps = len(dataset.get_test_data()) / query_time
     print(f"Queries per second: {qps:.4f}")

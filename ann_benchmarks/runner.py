@@ -1,6 +1,7 @@
 
 import importlib
 import time
+from tqdm.auto import tqdm
 
 def run_benchmark(dataset_name, algorithm_name):
     print(f"Running benchmark for {algorithm_name} on {dataset_name}")
@@ -18,7 +19,7 @@ def run_benchmark(dataset_name, algorithm_name):
 
     start_time = time.time()
     recalls = []
-    for i, (query, ground_truth) in enumerate(zip(dataset.get_test_data(), dataset.get_ground_truth())):
+    for query, ground_truth in tqdm(zip(dataset.get_test_data(), dataset.get_ground_truth()), total=len(dataset.get_test_data())):
         results = algorithm.query(query, 10)
         recall = len(set(results) & set(ground_truth)) / len(ground_truth)
         recalls.append(recall)

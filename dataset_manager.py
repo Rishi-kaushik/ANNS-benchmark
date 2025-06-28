@@ -12,19 +12,20 @@ if __name__ == "__main__":
     download_parser = subparsers.add_parser("download")
     download_parser.add_argument(
         'dataset_name',
-        help='The name of the dataset to download',
-        required=True)
+        help='The name of the dataset to download')
     list_caches_parser = subparsers.add_parser("list-caches")
     delete_cache_parser = subparsers.add_parser("delete-cache")
     delete_cache_parser.add_argument(
         'cache_name',
-        help='The name of the cache to delete',
-        required=True)
+        help='The name of the cache to delete')
 
     args = parser.parse_args()
 
     if args.command == "list":
-        for f in os.listdir("ann_benchmarks/datasets"):
+        datasets_dir = "ann_benchmarks/datasets"
+        if not os.path.exists(datasets_dir):
+            os.makedirs(datasets_dir)
+        for f in os.listdir(datasets_dir):
             if f.endswith(".py") and f != "__init__.py" and f != "base.py":
                 print(f.replace(".py", ""))
     elif args.command == "download":
@@ -32,7 +33,10 @@ if __name__ == "__main__":
         dataset = dataset_module.instantiate_dataset()
         dataset.download()
     elif args.command == "list-caches":
-        for f in os.listdir("cache"):
+        cache_dir = "cache"
+        if not os.path.exists(cache_dir):
+            os.makedirs(cache_dir)
+        for f in os.listdir(cache_dir):
             if f.endswith(".ann"):
                 print(f.replace(".ann", ""))
     elif args.command == "delete-cache":

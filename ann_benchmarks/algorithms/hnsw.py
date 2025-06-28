@@ -11,6 +11,8 @@ class HNSW(BaseAlgorithm):
 
     def query(self, q, n):
         distances, labels = self.index.search(q.reshape(1, -1), n)
+        # faiss returns a 2D array for labels, even for a single query.
+        # The first dimension corresponds to the query, so we return labels[0].
         return labels[0]
 
 def instantiate_algorithm(metric, dimensions):

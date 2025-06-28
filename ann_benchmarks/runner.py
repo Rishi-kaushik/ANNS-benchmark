@@ -2,6 +2,7 @@
 import importlib
 import time
 from tqdm.auto import tqdm
+import numpy as np
 
 def run_benchmark(dataset_name, algorithm_name):
     print(f"Running benchmark for {algorithm_name} on {dataset_name}")
@@ -18,14 +19,20 @@ def run_benchmark(dataset_name, algorithm_name):
     print(f"Build time: {build_time:.4f}s")
 
     start_time = time.time()
-    recalls = []
+    recalls = {1: [], 3: [], 5: []}
+    
     for query, ground_truth in tqdm(zip(dataset.get_test_data(), dataset.get_ground_truth()), total=len(dataset.get_test_data())):
         results = algorithm.query(query, 10)
-        recall = len(set(results) & set(ground_truth)) / len(ground_truth)
-        recalls.append(recall)
+        
+        for k in recalls.keys():
+            recall_k = len(set(results[:k]) & set(ground_truth[:k])) / k
+            recalls[k].append(recall_k)
+            
     query_time = time.time() - start_time
-    avg_recall = sum(recalls) / len(recalls)
+    
+    for k in sorted(recalls.keys()):
+        avg_recall_k = np.mean(recalls[k])
+        print(f"Average recall@{k}: {avg_recall_k:.4f}")
+        
     qps = len(dataset.get_test_data()) / query_time
-
-    print(f"Average recall: {avg_recall:.4f}")
     print(f"Queries per second: {qps:.4f}")

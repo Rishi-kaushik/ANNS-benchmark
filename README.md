@@ -19,7 +19,7 @@ This project benchmarks popular Approximate Nearest Neighbor (ANN) search algori
     wget ftp://ftp.irisa.fr/local/texmex/corpus/sift.tar.gz
     tar -xzf sift.tar.gz
     # You will need to convert the data to HDF5 format.
-    # A script to do this will be provided in the future.
+    python create_sift_hdf5.py sift
     ```
 
 3.  **Run benchmarks:**

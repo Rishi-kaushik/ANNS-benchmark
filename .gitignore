@@ -1,0 +1,13 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+
+# Data
+*.hdf5
+*.tar.gz
